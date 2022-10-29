@@ -17,19 +17,22 @@ namespace Repository
             get
             {
                 if(_fridgeRepository == null)
-                    _fridgeRepository = new FridgeRepository(_repositoryContext); return _fridgeRepository;
+                    _fridgeRepository = new FridgeRepository(_repositoryContext); 
+                return _fridgeRepository;
             } }
         public IModelRepository Model {
             get
             {
                 if(_modelRepository == null)
-                    _modelRepository = new ModelRepository(_repositoryContext); return _modelRepository;
+                    _modelRepository = new ModelRepository(_repositoryContext); 
+                return _modelRepository;
             } } 
         public IProductRepository Product {
             get
             {
                 if(_productRepository == null)
-                    _productRepository = new ProductRepository(_repositoryContext); return _productRepository;
+                    _productRepository = new ProductRepository(_repositoryContext); 
+                return _productRepository;
             } }
         
 
@@ -37,9 +40,9 @@ namespace Repository
             get
             {
                 if(_fridgeProductRepository == null)
-                    _fridgeProductRepository = new FridgeProductRepository(_repositoryContext); return _fridgeProductRepository;
+                    _fridgeProductRepository = new FridgeProductRepository(_repositoryContext); 
+                return _fridgeProductRepository;
             } }
-        
         
         public void Save() => _repositoryContext.SaveChanges();
     }

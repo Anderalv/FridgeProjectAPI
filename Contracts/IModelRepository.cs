@@ -5,6 +5,6 @@ namespace Contracts
 {
     public interface IModelRepository
     {
-        IEnumerable<Model> getAllFridgeModels(bool trackChanges);
+        IEnumerable<Model> GetAllFridgeModels(bool trackChanges);
     }
 }

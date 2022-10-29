@@ -5,6 +5,6 @@ namespace Contracts
 {
     public interface IFridgeProductRepository
     {
-        
+        IEnumerable<FridgeProduct> GetFridgeProducts(bool trackChanges);
     }
 }

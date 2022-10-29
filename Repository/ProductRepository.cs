@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Contracts;
+using Entities.DataTransferObjects;
 using Entities.Models;
 
 namespace Repository
@@ -10,9 +12,17 @@ namespace Repository
         public ProductRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
         }
-
-        public IEnumerable<Product> GetAllProducts(bool trackChanges)  => FindAll(trackChanges)
-            .OrderBy(c => c.Name) .ToList();
-
+        
+        public IEnumerable<ProductInFridgeDto>GetProducts(int fridgeId, bool trackChanges)
+        {
+            return RepositoryContext.FridgeProducts
+                .Where(x => x.IdFridge == fridgeId)
+                .Select(x => new ProductInFridgeDto
+                {
+                    Id = x.IdProduct,
+                    Name = x.Product.Name,
+                    Quantity = x.Quantity
+                });
+        }
     }
 }

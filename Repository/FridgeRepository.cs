@@ -13,7 +13,10 @@ namespace Repository
         
         public IEnumerable<Fridge> GetAllFridges(bool trackChanges) => FindAll(trackChanges)
             .OrderBy(c => c.Name) .ToList();
+
+      
+        public Fridge GetFridge(int fridgeId, bool trackChanges) => 
+            FindByCondition(c => c.Id.Equals(fridgeId), trackChanges).SingleOrDefault();
         
-       
     }
 }

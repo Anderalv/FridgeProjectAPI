@@ -1,4 +1,5 @@
 using System.IO;
+using Contracts;
 using FridgeProject.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,7 +19,6 @@ namespace FridgeProject
         {
             LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
-            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -32,12 +32,13 @@ namespace FridgeProject
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
             services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
         {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage(); }
@@ -45,6 +46,7 @@ namespace FridgeProject
             {
                 app.UseHsts();
             }
+            app.ConfigureExceptionHandler(logger);
             app.UseHttpsRedirection();
             app.UseStaticFiles(); app.UseCors("CorsPolicy");
             app.UseForwardedHeaders(new ForwardedHeadersOptions {
