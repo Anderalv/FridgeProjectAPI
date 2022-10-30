@@ -24,5 +24,12 @@ namespace Repository
                     Quantity = x.Quantity
                 });
         }
+
+        public void CreateProduct(Product product) => Create(product);
+        public Product GetProduct(int productId, bool trackChanges) =>  
+            FindByCondition(c => c.Id.Equals(productId), trackChanges).SingleOrDefault();
+        
+        public Product GetProductByName(string name, bool trackChanges) =>  
+            FindByCondition(c => c.Name.Equals(name), trackChanges).SingleOrDefault();
     }
 }

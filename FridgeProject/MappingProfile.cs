@@ -10,6 +10,9 @@ namespace FridgeProject
         public MappingProfile()
         {
             CreateMap<Fridge, FridgeDto>();
+            
+            CreateMap<Product, ProductInFridgeDto>();
+            CreateMap<ProductForCreationDto, Product>();
             CreateMap<Product, ProductDto>();
         }
     }
