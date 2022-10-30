@@ -14,6 +14,7 @@ namespace FridgeProject
             CreateMap<Product, ProductInFridgeDto>();
             CreateMap<ProductForCreationDto, Product>();
             CreateMap<Product, ProductDto>();
+            CreateMap<Product, ProductForUpdateDto>();
         }
     }
 }

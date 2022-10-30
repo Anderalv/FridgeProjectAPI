@@ -131,6 +131,27 @@ namespace FridgeProject.Controllers
              var productToReturn = _mapper.Map<ProductDto>(productEntity);
              return CreatedAtRoute("ProductById", new { id = productToReturn.Id }, productToReturn);
          }
+         
+         [HttpPut("{productId}")]
+         public IActionResult UpdateEmployeeForCompany(int productId, [FromBody] ProductForUpdateDto product)
+         {
+             if(product == null) {
+                 _logger.LogError("product object sent from client is null.");
+                 return BadRequest("product object is null"); }
+             
+             var productEntity = _repository.Product.GetProduct(productId, true);
+             if(productEntity == null) {
+                 _logger.LogInfo($"Product with id: {productId} doesn't exist in the database.");
+                 return NotFound(); 
+             }
+             else
+             {
+                 productEntity.Name = product.Name;
+                 productEntity.DefaultQuantity = product.DefaultQuantity;
+                 _repository.Save();
+                 return NoContent(); 
+             }
+         }
     }
 }
 
