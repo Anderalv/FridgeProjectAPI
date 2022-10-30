@@ -10,5 +10,6 @@ namespace Contracts
         
         void AddProductIntoFridge(FridgeProduct fridgeProduct, bool trackChanges);
         FridgeProduct GetFridgeProduct(int idProduct, int idFridge, bool trackChanges);
+        void DeleteProduct(FridgeProduct fridgeProduct);
     }
 }

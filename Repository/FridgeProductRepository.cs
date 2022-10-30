@@ -18,5 +18,7 @@ namespace Repository
 
         public FridgeProduct GetFridgeProduct(int idProduct, int idFridge, bool trackChanges) => RepositoryContext.FridgeProducts
             .FirstOrDefault(x => x.IdFridge == idFridge && x.IdProduct == idProduct);
+
+        public void DeleteProduct(FridgeProduct fridgeProduct) => Delete(fridgeProduct);
     }
 }

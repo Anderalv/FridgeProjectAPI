@@ -33,7 +33,7 @@ namespace FridgeProject.Controllers
         }
         
         [HttpGet("{fridgeId}", Name = "ProductsOnFridge")]
-        public IActionResult GetProductsInTheFridge(int fridgeId) {
+        public IActionResult GetProductsFromTheFridge(int fridgeId) {
             var fridge = _repository.Fridge.GetFridge(fridgeId, trackChanges: false); 
             
             if(fridge == null)
@@ -49,7 +49,7 @@ namespace FridgeProject.Controllers
         
         
         [HttpPost("AddProductInTheFridge")]
-        public IActionResult CreateCompanyCollection([FromBody] ProductForAddToFridgeDto productForAddToFridgeDto) {
+        public IActionResult AddProductInTheFridge([FromBody] ProductForAddToFridgeDto productForAddToFridgeDto) {
             
             
             if(productForAddToFridgeDto == null) {
@@ -90,5 +90,31 @@ namespace FridgeProject.Controllers
                 return CreatedAtRoute("ProductsOnFridge", new { fridgeId =productForAddToFridgeDto.IdFridge}, productsFromDb);
             }
         }
+        
+        [HttpDelete("DeleteProduct")]
+        public IActionResult DeleteProductFromFridge([FromBody] DeleteProductDto deleteProduct) {
+
+            var fridge = _repository.Fridge.GetFridge(deleteProduct.FridgeId, trackChanges: false);
+            var product = _repository.Product.GetProductByName(deleteProduct.NameProduct, false);
+            
+            if(fridge == null || product == null)
+            {
+                _logger.LogInfo($"error of input data");
+                return NotFound(); 
+            }
+
+            var fridgeProduct = _repository.FridgeProduct.GetFridgeProduct(product.Id, fridge.Id, true);
+
+            if (fridgeProduct.Quantity <= deleteProduct.Quantity)
+            {
+                _repository.FridgeProduct.DeleteProduct(fridgeProduct);
+                _repository.Save();
+            }
+            else
+            {
+                fridgeProduct.Quantity = fridgeProduct.Quantity - deleteProduct.Quantity;
+                _repository.Save();
+            }
+            return NoContent(); }
     }
 }
