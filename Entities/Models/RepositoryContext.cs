@@ -1,6 +1,7 @@
 using Entities.Configuration;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Entities.Models
 {
     public class RepositoryContext : DbContext
@@ -21,5 +22,7 @@ namespace Entities.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<FridgeProduct> FridgeProducts { get; set; }
         
+        
+      
     }
 }

@@ -6,6 +6,7 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FridgeProject.Controllers
 {
@@ -29,6 +30,7 @@ namespace FridgeProject.Controllers
         {
             var fridges = _repository.Fridge.GetAllFridges(trackChanges: false);
             var fridgesDto = _mapper.Map<IEnumerable<FridgeDto>>(fridges);
+            
             return Ok(fridgesDto);
         }
         
@@ -131,6 +133,25 @@ namespace FridgeProject.Controllers
                 fridgeProduct.Quantity = fridgeProduct.Quantity - deleteProduct.Quantity;
                 _repository.Save();
             }
-            return NoContent(); }
+            return NoContent();
+        }
+
+        [HttpPut("CallStoredProcedure")]
+        public void CallStoredProcedure()
+        {
+            var badProducts = _repository.FridgeProduct.Test();
+        
+            foreach (var fridgeProduct in badProducts)
+            {
+                var rowForChange = _repository.FridgeProduct.GetFridgeProduct(fridgeProduct.IdProduct
+                    , fridgeProduct.IdFridge, true);
+        
+                var defaultQuality = _repository.Product.GetProduct(fridgeProduct.IdProduct, false)
+                    .DefaultQuantity;
+        
+                rowForChange.Quantity = defaultQuality;
+                _repository.Save();
+            }
+        }
     }
 }
