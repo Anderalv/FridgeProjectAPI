@@ -57,37 +57,48 @@ namespace FridgeProject.Controllers
                 return BadRequest("Product for add to fridge is null"); 
             }
 
-            var productId = _repository.Product.GetProductByName(productForAddToFridgeDto.NameProduct,
+            if (_repository.Product.GetProductByName(productForAddToFridgeDto.Name, false) == null)
+            {
+                _logger.LogError("No product with this name on db.");
+                return BadRequest("No product with this name on db. You should add this product on db and try again");
+            }
+            
+            if (!ModelState.IsValid) {
+                _logger.LogError("Invalid model state for the ProductForAddToFridgeDto object"); 
+                return UnprocessableEntity(ModelState); 
+            }
+
+            var productId = _repository.Product.GetProductByName(productForAddToFridgeDto.Name,
                 false).Id;
 
-            if (_repository.FridgeProduct.GetFridgeProduct(productId, productForAddToFridgeDto.IdFridge, false) != null)
+            if (_repository.FridgeProduct.GetFridgeProduct(productId, productForAddToFridgeDto.FridgeId, false) != null)
             {
-                var newStr = _repository.FridgeProduct.GetFridgeProduct(productId, productForAddToFridgeDto.IdFridge, true);
+                var newStr = _repository.FridgeProduct.GetFridgeProduct(productId, productForAddToFridgeDto.FridgeId, true);
                 
-                var quantity = _repository.FridgeProduct.GetFridgeProduct(productId, productForAddToFridgeDto.IdFridge, false)
+                var quantity = _repository.FridgeProduct.GetFridgeProduct(productId, productForAddToFridgeDto.FridgeId, false)
                     .Quantity + productForAddToFridgeDto.Quantity;
 
                 newStr.Quantity = quantity;
                 _repository.Save();
                 
-                var productsFromDb = _repository.Product.GetProducts(productForAddToFridgeDto.IdFridge, trackChanges: false);
+                var productsFromDb = _repository.Product.GetProducts(productForAddToFridgeDto.FridgeId, trackChanges: false);
             
-                return CreatedAtRoute("ProductsOnFridge", new { fridgeId =productForAddToFridgeDto.IdFridge}, productsFromDb);
+                return CreatedAtRoute("ProductsOnFridge", new { fridgeId =productForAddToFridgeDto.FridgeId}, productsFromDb);
             }
             else
             {
                 FridgeProduct fridgeProduct = new FridgeProduct
                 {
                     IdProduct = productId,
-                    IdFridge = productForAddToFridgeDto.IdFridge,
+                    IdFridge = productForAddToFridgeDto.FridgeId,
                     Quantity = productForAddToFridgeDto.Quantity
                 };
 
                 _repository.FridgeProduct.AddProductIntoFridge(fridgeProduct, false);
                 _repository.Save();
-                var productsFromDb = _repository.Product.GetProducts(productForAddToFridgeDto.IdFridge, trackChanges: false);
+                var productsFromDb = _repository.Product.GetProducts(productForAddToFridgeDto.FridgeId, trackChanges: false);
 
-                return CreatedAtRoute("ProductsOnFridge", new { fridgeId =productForAddToFridgeDto.IdFridge}, productsFromDb);
+                return CreatedAtRoute("ProductsOnFridge", new { fridgeId =productForAddToFridgeDto.FridgeId}, productsFromDb);
             }
         }
         
@@ -95,12 +106,17 @@ namespace FridgeProject.Controllers
         public IActionResult DeleteProductFromFridge([FromBody] DeleteProductDto deleteProduct) {
 
             var fridge = _repository.Fridge.GetFridge(deleteProduct.FridgeId, trackChanges: false);
-            var product = _repository.Product.GetProductByName(deleteProduct.NameProduct, false);
+            var product = _repository.Product.GetProductByName(deleteProduct.Name, false);
             
             if(fridge == null || product == null)
             {
                 _logger.LogInfo($"error of input data");
                 return NotFound(); 
+            }
+            
+            if (!ModelState.IsValid) {
+                _logger.LogError("Invalid model state for the DeleteProductFromFridge object"); 
+                return UnprocessableEntity(ModelState); 
             }
 
             var fridgeProduct = _repository.FridgeProduct.GetFridgeProduct(product.Id, fridge.Id, true);

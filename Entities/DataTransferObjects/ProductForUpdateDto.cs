@@ -4,9 +4,7 @@ using Entities.Models;
 
 namespace Entities.DataTransferObjects
 {
-    public class ProductForUpdateDto
+    public class ProductForUpdateDto : ProductForCreateUpdate
     {
-        public String Name { get; set; }
-        public int DefaultQuantity { get; set; }
     }
 }

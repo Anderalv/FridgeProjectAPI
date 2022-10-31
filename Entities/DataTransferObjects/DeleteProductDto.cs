@@ -1,9 +1,8 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Entities.DataTransferObjects
 {
-    public class DeleteProductDto
+    public class DeleteProductDto : ProductForManipulationDto
     {
-        public int FridgeId { get; set; }
-        public string NameProduct { get; set; }
-        public int Quantity { get; set; }
     }
 }

@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Entities.Models;
 
 namespace Entities.DataTransferObjects
 {
-    public class ProductForCreationDto
+    public class ProductForCreationDto : ProductForCreateUpdate
     {
-        public String Name { get; set; }
-        public int DefaultQuantity { get; set; }
     }
 }
