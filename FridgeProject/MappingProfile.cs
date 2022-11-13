@@ -1,5 +1,4 @@
 using AutoMapper;
-using Entities;
 using Entities.DataTransferObjects;
 using Entities.Models;
 
@@ -9,12 +8,7 @@ namespace FridgeProject
     {
         public MappingProfile()
         {
-            CreateMap<Fridge, FridgeDto>();
-            
-            CreateMap<Product, ProductInFridgeDto>();
-            CreateMap<ProductForCreationDto, Product>();
             CreateMap<Product, ProductDto>();
-            CreateMap<Product, ProductForUpdateDto>();
         }
     }
 }

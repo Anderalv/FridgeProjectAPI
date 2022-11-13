@@ -15,16 +15,35 @@ namespace Repository
             _context = repositoryContext;
         }
 
-        // public IEnumerable<FridgeProduct> GetFridgeProducts(bool trackChanges) => 
-        //     FindAll(trackChanges).ToList();
-        public void AddProductIntoFridge(FridgeProduct fridgeProduct, bool trackChanges) => Create(fridgeProduct);
+        
+        public void AddProductIntoFridge(FridgeProduct fridgeProduct) => Create(fridgeProduct);
 
+        
         public FridgeProduct GetFridgeProduct(int idProduct, int idFridge, bool trackChanges) => RepositoryContext.FridgeProducts
             .FirstOrDefault(x => x.IdFridge == idFridge && x.IdProduct == idProduct);
 
-        public void DeleteProduct(FridgeProduct fridgeProduct) => Delete(fridgeProduct);
+        
+        public ICollection<FridgeProduct> GetFridgeProducts(bool trackChanges, int idFridge = 0, int idProduct = 0)
+        {
+            if (idFridge != 0)
+            {
+                return RepositoryContext.FridgeProducts.Where(x => x.IdFridge == idFridge).ToList();
+            }
+            else
+            {
+                if (idProduct != 0) return RepositoryContext.FridgeProducts.Where(x => x.IdProduct == idProduct).ToList();
+                else
+                {
+                    return null;
+                }
+            }
+        }
 
-        public List<FridgeProduct> Test()
+
+        public void DeleteFridgeProduct(FridgeProduct fridgeProduct) => Delete(fridgeProduct);
+
+        
+        public List<FridgeProduct> GetZeroFridgeProducts()
         {
            return _context
                 .FridgeProducts

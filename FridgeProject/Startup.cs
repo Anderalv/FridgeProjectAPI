@@ -9,8 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
 
-// using Microsoft.OpenApi.Models;
-
 namespace FridgeProject
 {
     public class Startup

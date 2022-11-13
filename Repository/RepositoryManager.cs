@@ -10,8 +10,10 @@ namespace Repository
         private IProductRepository _productRepository;
         private IFridgeProductRepository _fridgeProductRepository;
         
+        
         public RepositoryManager(RepositoryContext repositoryContext) {
             _repositoryContext = repositoryContext; }
+        
         
         public IFridgeRepository Fridge {
             get
@@ -20,6 +22,8 @@ namespace Repository
                     _fridgeRepository = new FridgeRepository(_repositoryContext); 
                 return _fridgeRepository;
             } }
+        
+        
         public IModelRepository Model {
             get
             {
@@ -27,6 +31,8 @@ namespace Repository
                     _modelRepository = new ModelRepository(_repositoryContext); 
                 return _modelRepository;
             } } 
+        
+        
         public IProductRepository Product {
             get
             {
@@ -43,6 +49,7 @@ namespace Repository
                     _fridgeProductRepository = new FridgeProductRepository(_repositoryContext); 
                 return _fridgeProductRepository;
             } }
+        
         
         public void Save() => _repositoryContext.SaveChanges();
     }

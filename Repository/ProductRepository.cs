@@ -13,6 +13,7 @@ namespace Repository
         {
         }
         
+        
         public IEnumerable<ProductInFridgeDto>GetProducts(int fridgeId, bool trackChanges)
         {
             return RepositoryContext.FridgeProducts
@@ -25,11 +26,22 @@ namespace Repository
                 });
         }
 
+        
         public void CreateProduct(Product product) => Create(product);
+        
+        
         public Product GetProduct(int productId, bool trackChanges) =>  
             FindByCondition(c => c.Id.Equals(productId), trackChanges).SingleOrDefault();
         
+
+        public IEnumerable<Product> GetAllProducts(bool trackChanges) => FindAll(trackChanges)
+            .OrderBy(c => c.Name) .ToList();
+
+        
         public Product GetProductByName(string name, bool trackChanges) =>  
             FindByCondition(c => c.Name.Equals(name), trackChanges).SingleOrDefault();
+
+        
+        public void DeleteProduct(Product product) => Delete(product);
     }
 }

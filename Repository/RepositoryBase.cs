@@ -16,12 +16,14 @@ namespace Repository
             RepositoryContext = repositoryContext;
         }
 
+        
         public IQueryable<T> FindAll(bool trackChanges) =>
             !trackChanges
                 ? RepositoryContext.Set<T>()
                     .AsNoTracking()
                 : RepositoryContext.Set<T>();
 
+        
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges) =>
             !trackChanges
                 ? RepositoryContext.Set<T>()

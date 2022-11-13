@@ -18,6 +18,7 @@ namespace FridgeProject
             return services;
         }
 
+        
         public static IApplicationBuilder UseSwaggerDocumentation(this IApplicationBuilder app)
         {
             app.UseSwagger();

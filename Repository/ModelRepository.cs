@@ -11,7 +11,15 @@ namespace Repository
         {
         }
 
+        
         public IEnumerable<Model> GetAllFridgeModels(bool trackChanges)  => FindAll(trackChanges)
             .OrderBy(c => c.Name) .ToList();
+
+        
+        public Model GetModel(int modelId, bool trackChanges) => 
+                FindByCondition(c => c.Id.Equals(modelId), trackChanges).SingleOrDefault();
+
+        
+        public Model GetModelByName(string name, bool trackChanges)=>FindByCondition(c => c.Name.Equals(name), trackChanges).SingleOrDefault();
     }
 }
