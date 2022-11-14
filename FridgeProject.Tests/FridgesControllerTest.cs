@@ -26,7 +26,7 @@ namespace FridgeProject.Tests
             repositoryManager.Fridge.GetAllFridges(false).Returns(GetTestFridges());
             repositoryManager.Model.GetModel(1, false).Returns(GetTestModels().First(x => x.Id == 1));
             repositoryManager.Model.GetModel(2, false).Returns(GetTestModels().First(x => x.Id == 2));
-            var controller = new FridgesController(repositoryManager, Substitute.For<ILoggerManager>(), Substitute.For<IMapper>());
+            var controller = new FridgesController(repositoryManager, Substitute.For<ILoggerManager>());
  
             // Act
             var result = controller.GetFridges();
@@ -45,7 +45,7 @@ namespace FridgeProject.Tests
             repositoryManager.Fridge.GetFridge(1 ,false).Returns(GetTestFridges().First(x => x.Id == 1));
 
             repositoryManager.Product.GetProducts(1, false).Returns(GetTestProducts());
-            var controller = new FridgesController(repositoryManager, Substitute.For<ILoggerManager>(), Substitute.For<IMapper>());
+            var controller = new FridgesController(repositoryManager, Substitute.For<ILoggerManager>());
  
             // Act
             var result = controller.GetProductsFromTheFridge(1);
@@ -73,7 +73,7 @@ namespace FridgeProject.Tests
             repositoryManager.FridgeProduct.GetFridgeProduct(4, productForAddToFridgeDto.FridgeId, true)
                 .Returns(_fridgeProduct);
 
-            var controller = new FridgesController(repositoryManager, Substitute.For<ILoggerManager>(), Substitute.For<IMapper>());
+            var controller = new FridgesController(repositoryManager, Substitute.For<ILoggerManager>());
  
             // Act
             var result = controller.AddProductInTheFridge(1, productForAddToFridgeDto);
@@ -103,7 +103,7 @@ namespace FridgeProject.Tests
                 .Returns(_fridgeProduct);
                 
 
-            var controller = new FridgesController(repositoryManager, Substitute.For<ILoggerManager>(), Substitute.For<IMapper>());
+            var controller = new FridgesController(repositoryManager, Substitute.For<ILoggerManager>());
  
             // Act
             var result = controller.AddProductInTheFridge(1, productForAddToFridgeDto);

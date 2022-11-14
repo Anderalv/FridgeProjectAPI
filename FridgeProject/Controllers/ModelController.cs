@@ -21,6 +21,5 @@ namespace FridgeProject.Controllers
             var models = _repository.Model.GetAllFridgeModels(false).ToList();
             return Ok(models);
         }
-
     }
 }

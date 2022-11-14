@@ -22,24 +22,22 @@ namespace FridgeProject.Controllers
         
         
         [HttpGet("{id}", Name = "ProductById")]
-        public IActionResult GetProduct(int id) {
+        public IActionResult GetProduct(int id) 
+        {
             var product = _repository.Product.GetProduct(id, trackChanges: false); 
             if(product == null)
             { 
                 _logger.LogInfo($"Product with id: {id} doesn't exist in the database."); 
                 return NotFound(); 
             }
-            else
+
+            var productDto = new ProductDto
             {
-                // var productDto = _mapper.Map<ProductDto>(product);
-                var productDto = new ProductDto
-                {
-                    Id = product.Id,
-                    Name = product.Name,
-                    DefaultQuantity = product.DefaultQuantity
-                };
-                return Ok(productDto);
-            } 
+                Id = product.Id,
+                Name = product.Name,
+                DefaultQuantity = product.DefaultQuantity
+            };
+            return Ok(productDto);
         }
 
         
@@ -76,27 +74,29 @@ namespace FridgeProject.Controllers
          [HttpPut("{productId}")]
          public IActionResult UpdateProduct(int productId, [FromBody] ProductForUpdateDto product)
          {
-             if(product == null) {
+             if(product == null) 
+             {
                  _logger.LogError("product object sent from client is null.");
-                 return BadRequest("product object is null"); }
+                 return BadRequest("product object is null"); 
+             }
 
-             if (!ModelState.IsValid) {
+             if (!ModelState.IsValid) 
+             {
                  _logger.LogError("Invalid model state for the UpdateProduct object"); 
                  return UnprocessableEntity(ModelState); 
              }
 
              var productEntity = _repository.Product.GetProduct(productId, true);
-             if(productEntity == null) {
+             if(productEntity == null) 
+             {
                  _logger.LogInfo($"Product with id: {productId} doesn't exist in the database.");
                  return NotFound(); 
              }
-             else
-             {
-                 productEntity.Name = product.Name;
-                 productEntity.DefaultQuantity = product.Quantity;
-                 _repository.Save();
-                 return Ok(productEntity); 
-             }
+
+             productEntity.Name = product.Name;
+             productEntity.DefaultQuantity = product.Quantity;
+             _repository.Save();
+             return Ok(productEntity);
          }
          
          
@@ -109,8 +109,8 @@ namespace FridgeProject.Controllers
          
          
          [HttpDelete("DeleteProduct/{idProduct}")]
-         public IActionResult DeleteProduct(int idProduct) {
-
+         public IActionResult DeleteProduct(int idProduct) 
+         {
              var product = _repository.Product.GetProduct(idProduct, false);
              if(product == null)
              {
@@ -118,7 +118,8 @@ namespace FridgeProject.Controllers
                  return NotFound(); 
              }
             
-             var fridgeProducts = _repository.FridgeProduct.GetFridgeProducts(false, idProduct: idProduct);
+             var fridgeProducts = _repository.FridgeProduct
+                 .GetFridgeProducts(false, idProduct: idProduct);
 
              foreach (var fridgeProduct in fridgeProducts)
              {
