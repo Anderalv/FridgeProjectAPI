@@ -1,18 +1,19 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Entities.Models;
 
 namespace Contracts
 {
     public interface IFridgeProductRepository
     {
-        void AddProductIntoFridge(FridgeProduct fridgeProduct);
+        public void AddProductIntoFridge(FridgeProduct fridgeProduct);
         
-        FridgeProduct GetFridgeProduct(int idProduct, int idFridge, bool trackChanges);
+        public Task<FridgeProduct> GetFridgeProductAsync(int idProduct, int idFridge, bool trackChanges);
         
-        void DeleteFridgeProduct(FridgeProduct fridgeProduct);
+        public void DeleteFridgeProduct(FridgeProduct fridgeProduct);
         
-        public ICollection<FridgeProduct> GetFridgeProducts(bool trackChanges, int idFridge = 0, int idProduct = 0);
+        public Task<ICollection<FridgeProduct>> GetFridgeProductsAsync(bool trackChanges, int idFridge = 0, int idProduct = 0);
         
-        public List<FridgeProduct> GetZeroFridgeProducts();
+        public Task<List<FridgeProduct>> GetZeroFridgeProductsAsync();
     }
 }

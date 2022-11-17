@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,9 @@ namespace FridgeProject.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllModels()
+        public async Task<IActionResult> GetAllModels()
         {
-            var models = _repository.Model.GetAllFridgeModels(false).ToList();
+            var models = await _repository.Model.GetAllFridgeModelsAsync(false);
             return Ok(models);
         }
     }

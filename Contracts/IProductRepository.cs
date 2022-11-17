@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Entities.DataTransferObjects;
 using Entities.Models;
 
@@ -6,15 +7,15 @@ namespace Contracts
 {
     public interface IProductRepository
     {
-        IEnumerable<ProductInFridgeDto> GetProducts(int fridgeId, bool trackChanges);
+        public Task<IEnumerable<ProductInFridgeDto>> GetProductsAsync(int fridgeId, bool trackChanges);
         
-        void CreateProduct(Product product);
+        public void CreateProduct(Product product);
         
-        Product GetProduct(int idProduct, bool trackChanges);
+        public Task<Product> GetProductAsync(int idProduct, bool trackChanges);
         
-        IEnumerable<Product> GetAllProducts(bool trackChanges);
+        public Task<IEnumerable<Product>> GetAllProductsAsync(bool trackChanges);
         
-        Product GetProductByName(string name, bool trackChanges);
+        public Task<Product> GetProductByNameAsync(string name, bool trackChanges);
         
         public void DeleteProduct(Product product);
     }

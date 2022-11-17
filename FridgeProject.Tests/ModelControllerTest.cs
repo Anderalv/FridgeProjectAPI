@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
 using Entities.Models;
@@ -17,15 +18,16 @@ namespace FridgeProject.Tests
         {
             // Arrange
             var repositoryManager = Substitute.For<IRepositoryManager>();
-            repositoryManager.Model.GetAllFridgeModels(false).Returns(GetTestModels());
+            repositoryManager.Model.GetAllFridgeModelsAsync(false).Returns(GetTestModels());
             var controller = new ModelController(repositoryManager);
 
             // Act
             var result = controller.GetAllModels();
             
             // Assert
-            var viewResult = Assert.IsType<OkObjectResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<Model>>(viewResult.Value);
+            var viewResult = Assert.IsType<Task<IActionResult>>(result);
+            var viewResult2 = Assert.IsType<OkObjectResult>(viewResult.Result);
+            var model = Assert.IsAssignableFrom<IEnumerable<Model>>(viewResult2.Value);
             Assert.Equal(GetTestModels().Count, model.Count());
         }
         

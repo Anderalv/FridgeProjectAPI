@@ -5,6 +5,21 @@
     &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=075f6403_002Dc169_002D4d97_002Dbf98_002D692e45bda62e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="IndexReturnsAViewResultWithAListOfFridges #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest.IndexReturnsAViewResultWithAListOfFridges&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0b84c149_002D352d_002D408a_002D9458_002D07b7b25ff620/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="IndexReturnsAViewResultWithAListOfFridges #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest.IndexReturnsAViewResultWithAListOfFridges&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=16c4d756_002D70f6_002D4dd3_002Dbeed_002D67c952b9b70a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="IndexReturnsAViewResultWithProduct" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.ProductControllerTest.IndexReturnsAViewResultWithProduct&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=190d084a_002D2170_002D4541_002D8298_002D744cf3ee14b9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="IndexReturnsAViewResultWithAListOfFridges #7" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest.IndexReturnsAViewResultWithAListOfFridges&lt;/TestId&gt;
@@ -14,6 +29,16 @@
     &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest.IndexReturnsAViewResultWithAAddProductInTheFridge&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest.IndexReturnsAViewResultWithAGetProductsFromTheFridge&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=46afeb67_002D1947_002D4783_002D85d2_002Da025a4fefe48/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="IndexReturnsAViewResultWithAListOfFridges #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest.IndexReturnsAViewResultWithAListOfFridges&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest.IndexReturnsAViewResultWithAGetProductsFromTheFridge&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest.IndexReturnsAViewResultWithAAddProductInTheFridge&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=475f1e58_002D30eb_002D49de_002Db7d5_002D936dc3abcfa6/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;FridgeProject.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Project Location="/Users/andreylastovski/Desktop/innow/web api 2/FridgeProject/FridgeProject.Tests" Presentation="&amp;lt;FridgeProject.Tests&amp;gt;" /&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=51c29dbe_002D931f_002D424a_002Db714_002D3f32a29efee0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="IndexReturnsAViewResultWithAListOfFridges #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
@@ -28,6 +53,17 @@
     &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest.IndexReturnsAViewResultWithAListOfFridges&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8cfc2788_002Dfc18_002D47dd_002Dac7c_002Df59c6e9cc65e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ProductControllerTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.ProductControllerTest&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c5007591_002D519c_002D45d8_002D9b9d_002Db322e210f6eb/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="IndexReturnsAViewResultWithProduct #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.ProductControllerTest.IndexReturnsAViewResultWithProduct&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c54787cb_002D8278_002D484d_002Da2c0_002D4f35cdc3ec1b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="IndexReturnsAViewResultWithAListOfFridges" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest.IndexReturnsAViewResultWithAListOfFridges&lt;/TestId&gt;
@@ -38,9 +74,23 @@
     &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest.IndexReturnsAViewResultWithAListOfFridges&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d5ed39b2_002Dace5_002D4894_002D9e9c_002Dcaa5a4efcdb4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="IndexReturnsAViewResultWithAListOfFridges" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest.IndexReturnsAViewResultWithAListOfFridges&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=dcc5ef69_002Ddfc4_002D4121_002D856c_002D0d5ad6d07cac/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="IndexReturnsAViewResultWithAListOfFridges #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest.IndexReturnsAViewResultWithAListOfFridges&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e6d812b4_002D3a06_002D44ee_002Db561_002Dc479d06d308b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="IndexReturnsAViewResultWithAGetProductsFromTheFridge" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.FridgesControllerTest&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.ModelControllerTest.IndexReturnsAViewResultWithAListOfProducts&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.ModelControllerTest&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.ProductControllerTest.IndexReturnsAViewResultWithACreateProduct&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::1CB9F190-C350-495E-A656-41EBE3248BAA::net5.0::FridgeProject.Tests.ProductControllerTest&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f51100ee_002D7630_002D4663_002D978e_002D3545b3e86ebb/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="IndexReturnsAViewResultWithAListOfFridges #9" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;

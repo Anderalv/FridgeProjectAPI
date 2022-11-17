@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Contracts;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository
 {
@@ -12,12 +14,12 @@ namespace Repository
         }
         
         
-        public IEnumerable<Fridge> GetAllFridges(bool trackChanges) => FindAll(trackChanges)
-            .OrderBy(c => c.Name) .ToList();
+        public async Task<IEnumerable<Fridge>> GetAllFridgesAsync(bool trackChanges) => await FindAll(trackChanges)
+            .OrderBy(c => c.Name) .ToListAsync();
 
       
-        public Fridge GetFridge(int fridgeId, bool trackChanges) => 
-            FindByCondition(c => c.Id.Equals(fridgeId), trackChanges).SingleOrDefault();
+        public async Task<Fridge> GetFridgeAsync(int fridgeId, bool trackChanges) => 
+            await FindByCondition(c => c.Id.Equals(fridgeId), trackChanges).SingleOrDefaultAsync();
         
         
         public void DeleteFridge(Fridge fridge) => Delete(fridge);

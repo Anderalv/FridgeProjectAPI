@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
@@ -22,9 +23,9 @@ namespace FridgeProject.Controllers
         
         
         [HttpGet("{id}", Name = "ProductById")]
-        public IActionResult GetProduct(int id) 
+        public async Task<IActionResult> GetProduct(int id) 
         {
-            var product = _repository.Product.GetProduct(id, trackChanges: false); 
+            var product = await _repository.Product.GetProductAsync(id, trackChanges: false); 
             if(product == null)
             { 
                 _logger.LogInfo($"Product with id: {id} doesn't exist in the database."); 
@@ -42,7 +43,7 @@ namespace FridgeProject.Controllers
 
         
         [HttpPost("CreateProduct")]
-         public IActionResult CreateProduct([FromBody] ProductForCreateDto product)
+         public async Task<IActionResult> CreateProduct([FromBody] ProductForCreateDto product)
          {
              if (product == null)
              {
@@ -61,7 +62,7 @@ namespace FridgeProject.Controllers
                  DefaultQuantity = product.Quantity
              };
              _repository.Product.CreateProduct(productEntity);
-             _repository.Save();
+             await _repository.SaveAsync();
              var productToReturn = new ProductDto
              {
                  Name = product.Name,
@@ -72,7 +73,7 @@ namespace FridgeProject.Controllers
          
          
          [HttpPut("{productId}")]
-         public IActionResult UpdateProduct(int productId, [FromBody] ProductForUpdateDto product)
+         public async Task<IActionResult> UpdateProduct(int productId, [FromBody] ProductForUpdateDto product)
          {
              if(product == null) 
              {
@@ -86,7 +87,7 @@ namespace FridgeProject.Controllers
                  return UnprocessableEntity(ModelState); 
              }
 
-             var productEntity = _repository.Product.GetProduct(productId, true);
+             var productEntity = await _repository.Product.GetProductAsync(productId, true);
              if(productEntity == null) 
              {
                  _logger.LogInfo($"Product with id: {productId} doesn't exist in the database.");
@@ -95,38 +96,38 @@ namespace FridgeProject.Controllers
 
              productEntity.Name = product.Name;
              productEntity.DefaultQuantity = product.Quantity;
-             _repository.Save();
+             await _repository.SaveAsync();
              return Ok(productEntity);
          }
          
          
          [HttpGet("AllProducts")]
-         public IActionResult GetAllProducts()
+         public async Task<IActionResult> GetAllProducts()
          {
-             var products = _repository.Product.GetAllProducts( trackChanges: false);
+             var products = await _repository.Product.GetAllProductsAsync( trackChanges: false);
              return Ok(products);
          }
          
          
          [HttpDelete("DeleteProduct/{idProduct}")]
-         public IActionResult DeleteProduct(int idProduct) 
+         public async Task<IActionResult> DeleteProduct(int idProduct) 
          {
-             var product = _repository.Product.GetProduct(idProduct, false);
+             var product = await _repository.Product.GetProductAsync(idProduct, false);
              if(product == null)
              {
                  _logger.LogInfo($"error of input data");
                  return NotFound(); 
              }
             
-             var fridgeProducts = _repository.FridgeProduct
-                 .GetFridgeProducts(false, idProduct: idProduct);
+             var fridgeProducts = await _repository.FridgeProduct
+                 .GetFridgeProductsAsync(false, idProduct: idProduct);
 
              foreach (var fridgeProduct in fridgeProducts)
              {
                  _repository.FridgeProduct.DeleteFridgeProduct(fridgeProduct);
              }
              _repository.Product.DeleteProduct(product);
-             _repository.Save();
+             await _repository.SaveAsync();
              return NoContent();
          }
     }

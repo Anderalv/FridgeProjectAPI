@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
@@ -19,19 +20,19 @@ namespace Repository
         public void AddProductIntoFridge(FridgeProduct fridgeProduct) => Create(fridgeProduct);
 
         
-        public FridgeProduct GetFridgeProduct(int idProduct, int idFridge, bool trackChanges) => RepositoryContext.FridgeProducts
-            .FirstOrDefault(x => x.IdFridge == idFridge && x.IdProduct == idProduct);
+        public async Task<FridgeProduct> GetFridgeProductAsync(int idProduct, int idFridge, bool trackChanges) => await RepositoryContext.FridgeProducts
+            .FirstOrDefaultAsync(x => x.IdFridge == idFridge && x.IdProduct == idProduct);
 
         
-        public ICollection<FridgeProduct> GetFridgeProducts(bool trackChanges, int idFridge = 0, int idProduct = 0)
+        public async Task<ICollection<FridgeProduct>> GetFridgeProductsAsync(bool trackChanges, int idFridge = 0, int idProduct = 0)
         {
             if (idFridge != 0)
             {
-                return RepositoryContext.FridgeProducts.Where(x => x.IdFridge == idFridge).ToList();
+                return await RepositoryContext.FridgeProducts.Where(x => x.IdFridge == idFridge).ToListAsync();
             }
             else
             {
-                if (idProduct != 0) return RepositoryContext.FridgeProducts.Where(x => x.IdProduct == idProduct).ToList();
+                if (idProduct != 0) return await RepositoryContext.FridgeProducts.Where(x => x.IdProduct == idProduct).ToListAsync();
                 else
                 {
                     return null;
@@ -43,12 +44,12 @@ namespace Repository
         public void DeleteFridgeProduct(FridgeProduct fridgeProduct) => Delete(fridgeProduct);
 
         
-        public List<FridgeProduct> GetZeroFridgeProducts()
+        public async Task<List<FridgeProduct>> GetZeroFridgeProductsAsync()
         {
-           return _context
+           return await _context
                 .FridgeProducts
                 .FromSqlRaw("GetZeroFridgeProducts")
-                .ToList();
+                .ToListAsync();
         }
     }
 }

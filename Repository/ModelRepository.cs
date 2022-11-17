@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Contracts;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository
 {
@@ -12,14 +14,16 @@ namespace Repository
         }
 
         
-        public IEnumerable<Model> GetAllFridgeModels(bool trackChanges)  => FindAll(trackChanges)
-            .OrderBy(c => c.Name) .ToList();
+        public async Task<IEnumerable<Model>> GetAllFridgeModelsAsync(bool trackChanges)  => 
+            await FindAll(trackChanges)
+            .OrderBy(c => c.Name) .ToListAsync();
 
         
-        public Model GetModel(int modelId, bool trackChanges) => 
-                FindByCondition(c => c.Id.Equals(modelId), trackChanges).SingleOrDefault();
+        public async Task<Model> GetModelAsync(int modelId, bool trackChanges) => 
+                await FindByCondition(c => c.Id.Equals(modelId), trackChanges).SingleOrDefaultAsync();
 
-        
-        public Model GetModelByName(string name, bool trackChanges)=>FindByCondition(c => c.Name.Equals(name), trackChanges).SingleOrDefault();
+
+        public async Task<Model> GetModelByNameAsync(string name, bool trackChanges) => 
+            await FindByCondition(c => c.Name.Equals(name), trackChanges).SingleOrDefaultAsync();
     }
 }

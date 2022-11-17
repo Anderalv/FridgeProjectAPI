@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
@@ -23,13 +24,13 @@ namespace FridgeProject.Controllers
         
         
         [HttpGet]
-        public IActionResult GetFridges()
+        public async Task<IActionResult> GetFridges()
         {
             List<FridgeWithModelDto> fridgeWithModelDtos = new List<FridgeWithModelDto>();
-            var fridges = _repository.Fridge.GetAllFridges(trackChanges: false);
+            var fridges = await _repository.Fridge.GetAllFridgesAsync(trackChanges: false);
             foreach (var fridge in fridges)
             {
-                var model = _repository.Model.GetModel(fridge.IdModel, false);
+                var model = await _repository.Model.GetModelAsync(fridge.IdModel, false);
                 var fridgeWithModelDto = new FridgeWithModelDto
                 {
                     IdFridge = fridge.Id,
@@ -47,9 +48,9 @@ namespace FridgeProject.Controllers
         
         
         [HttpGet("/ProductOnFridge/{fridgeId}", Name = "ProductsOnFridge")]
-        public IActionResult GetProductsFromTheFridge(int fridgeId) 
+        public async Task<IActionResult> GetProductsFromTheFridge(int fridgeId) 
         {
-            var fridge = _repository.Fridge.GetFridge(fridgeId, trackChanges: false); 
+            var fridge = await _repository.Fridge.GetFridgeAsync(fridgeId, trackChanges: false); 
             
             if(fridge == null)
             {
@@ -57,13 +58,13 @@ namespace FridgeProject.Controllers
                 return NotFound(); 
             }
             
-            var productsFromDb = _repository.Product.GetProducts(fridgeId, trackChanges: false);
+            var productsFromDb = await _repository.Product.GetProductsAsync(fridgeId, trackChanges: false);
             return Ok(productsFromDb);
         }
         
         
         [HttpPost("/AddProductInTheFridge/{fridgeId}", Name ="AddProductInTheFridge")]
-        public IActionResult AddProductInTheFridge(int fridgeId,[FromBody] ProductForAddToFridgeDto productForAddToFridgeDto) 
+        public async Task<IActionResult> AddProductInTheFridge(int fridgeId,[FromBody] ProductForAddToFridgeDto productForAddToFridgeDto) 
         {
             if(productForAddToFridgeDto == null) 
             {
@@ -71,7 +72,7 @@ namespace FridgeProject.Controllers
                 return BadRequest("Product for add to fridge is null"); 
             }
 
-            if (_repository.Product.GetProductByName(productForAddToFridgeDto.Name, false) == null)
+            if (await _repository.Product.GetProductByNameAsync(productForAddToFridgeDto.Name, false) == null)
             {
                 _logger.LogError("No product with this name on db.");
                 return BadRequest("No product with this name on db. You should add this product on db and try again");
@@ -82,21 +83,21 @@ namespace FridgeProject.Controllers
                 _logger.LogError("Invalid model state for the ProductForAddToFridgeDto object"); 
                 return UnprocessableEntity(ModelState); 
             }
+//////??????????????????????? await
+            var productId = (await _repository.Product.GetProductByNameAsync(productForAddToFridgeDto.Name,
+                false)).Id;
 
-            var productId = _repository.Product.GetProductByName(productForAddToFridgeDto.Name,
-                false).Id;
-
-            if (_repository.FridgeProduct.GetFridgeProduct(productId, productForAddToFridgeDto.FridgeId, false) != null)
+            if (await _repository.FridgeProduct.GetFridgeProductAsync(productId, productForAddToFridgeDto.FridgeId, false) != null)
             {
-                var newStr = _repository.FridgeProduct.GetFridgeProduct(productId, productForAddToFridgeDto.FridgeId, true);
-                
-                var quantity = _repository.FridgeProduct.GetFridgeProduct(productId, productForAddToFridgeDto.FridgeId, false)
+                var newStr = await _repository.FridgeProduct.GetFridgeProductAsync(productId, productForAddToFridgeDto.FridgeId, true); 
+//////??????????????????????? await
+                var quantity = (await _repository.FridgeProduct.GetFridgeProductAsync(productId, productForAddToFridgeDto.FridgeId, false))
                     .Quantity + productForAddToFridgeDto.Quantity;
 
                 newStr.Quantity = quantity;
-                _repository.Save();
+                await _repository.SaveAsync();
                 
-                var productsFromDb = _repository.Product.GetProducts(productForAddToFridgeDto.FridgeId, trackChanges: false);
+                var productsFromDb = await _repository.Product.GetProductsAsync(productForAddToFridgeDto.FridgeId, trackChanges: false);
                 return Ok(productsFromDb);
             }
             else
@@ -109,18 +110,18 @@ namespace FridgeProject.Controllers
                 };
 
                 _repository.FridgeProduct.AddProductIntoFridge(fridgeProduct);
-                _repository.Save();
-                var productsFromDb = _repository.Product.GetProducts(productForAddToFridgeDto.FridgeId, trackChanges: false);
+                await  _repository.SaveAsync();
+                var productsFromDb = await _repository.Product.GetProductsAsync(productForAddToFridgeDto.FridgeId, trackChanges: false);
                 return Ok(productsFromDb);
             }
         }
         
         
         [HttpDelete("DeleteProduct")]
-        public IActionResult DeleteProductFromFridge([FromBody] DeleteProductDto deleteProduct) 
+        public async Task<IActionResult> DeleteProductFromFridge([FromBody] DeleteProductDto deleteProduct) 
         {
-            var fridge = _repository.Fridge.GetFridge(deleteProduct.FridgeId, trackChanges: false);
-            var product = _repository.Product.GetProductByName(deleteProduct.Name, false);
+            var fridge = await _repository.Fridge.GetFridgeAsync(deleteProduct.FridgeId, trackChanges: false);
+            var product = await _repository.Product.GetProductByNameAsync(deleteProduct.Name, false);
             
             if(fridge == null || product == null)
             {
@@ -134,7 +135,7 @@ namespace FridgeProject.Controllers
                 return UnprocessableEntity(ModelState); 
             }
 
-            var fridgeProduct = _repository.FridgeProduct.GetFridgeProduct(product.Id, fridge.Id, true);
+            var fridgeProduct = await _repository.FridgeProduct.GetFridgeProductAsync(product.Id, fridge.Id, true);
 
             if (fridgeProduct.Quantity <= deleteProduct.Quantity)
             {
@@ -144,19 +145,19 @@ namespace FridgeProject.Controllers
             {
                 fridgeProduct.Quantity -= deleteProduct.Quantity;
             }
-            _repository.Save();
+            await _repository.SaveAsync();
             return NoContent();
         }
 
         
         [HttpPut("CallStoredProcedure")]
-        public void CallStoredProcedure()
+        public async void CallStoredProcedure()
         {
-            var badProducts = _repository.FridgeProduct.GetZeroFridgeProducts();
+            var badProducts = await _repository.FridgeProduct.GetZeroFridgeProductsAsync();
 
             foreach (var fridgeProduct in badProducts)
             {
-                var product = _repository.Product.GetProduct(fridgeProduct.IdProduct, false);
+                var product = await _repository.Product.GetProductAsync(fridgeProduct.IdProduct, false);
                 ProductForAddToFridgeDto productForAddToFridgeDto = new ProductForAddToFridgeDto
                 {
                     FridgeId = fridgeProduct.IdFridge,
@@ -164,27 +165,28 @@ namespace FridgeProject.Controllers
                     Quantity = product.DefaultQuantity
                 };
 
-                AddProductInTheFridge(fridgeProduct.IdFridge, productForAddToFridgeDto);
+                await AddProductInTheFridge(fridgeProduct.IdFridge, productForAddToFridgeDto);
             }
-
-            // foreach (var fridgeProduct in badProducts)
-            // {
-            //     var rowForChange = _repository.FridgeProduct.GetFridgeProduct(fridgeProduct.IdProduct
-            //         , fridgeProduct.IdFridge, true);
-            //
-            //     var defaultQuality = _repository.Product.GetProduct(fridgeProduct.IdProduct, false)
-            //         .DefaultQuantity;
-            //
-            //     rowForChange.Quantity = defaultQuality;
-            //     _repository.Save();
-            // }
+//////////////
+            foreach (var fridgeProduct in badProducts)
+            {
+                var rowForChange = await _repository.FridgeProduct.GetFridgeProductAsync(fridgeProduct.IdProduct
+                    , fridgeProduct.IdFridge, true);
+         
+                var defaultQuality = (await _repository.Product.GetProductAsync(fridgeProduct.IdProduct, false))
+                    .DefaultQuantity;
+            
+                rowForChange.Quantity = defaultQuality;
+                await _repository.SaveAsync();
+            }
+//////////////            
         }
 
         
         [HttpPut("/EditFridge/{idFridge}")]
-        public IActionResult EditFridge(int idFridge,[FromBody] EditFridgeDto editFridgeDto)
+        public async Task<IActionResult> EditFridge(int idFridge,[FromBody] EditFridgeDto editFridgeDto)
         {
-            var editFridge = _repository.Fridge.GetFridge(idFridge, true);
+            var editFridge = await _repository.Fridge.GetFridgeAsync(idFridge, true);
             if (string.IsNullOrEmpty(editFridgeDto.Name) || string.IsNullOrEmpty(editFridgeDto.OwnerName))
             {
                 _logger.LogInfo($"write old or new name/owner name");
@@ -194,26 +196,26 @@ namespace FridgeProject.Controllers
             editFridge.Name = editFridgeDto.Name;
             editFridge.OwnerName = editFridgeDto.OwnerName;
             editFridge.IdModel = editFridgeDto.IdModel;
-            _repository.Save();
+            await _repository.SaveAsync();
 
             foreach (var editedProduct in editFridgeDto.EditedProducts)
             {
                 if (editedProduct.EditedQuantity == 0)
                 {
-                    var productOnFridge = _repository.FridgeProduct.GetFridgeProduct(editedProduct.IdProduct, idFridge, false);
+                    var productOnFridge = await _repository.FridgeProduct.GetFridgeProductAsync(editedProduct.IdProduct, idFridge, false);
                     _repository.FridgeProduct.DeleteFridgeProduct(productOnFridge);
                 }
                 else
                 {
-                    var productOnFridge = _repository.FridgeProduct.GetFridgeProduct(editedProduct.IdProduct, idFridge, true);
+                    var productOnFridge = await _repository.FridgeProduct.GetFridgeProductAsync(editedProduct.IdProduct, idFridge, true);
                     productOnFridge.Quantity = editedProduct.EditedQuantity;
                 }
-                _repository.Save();
+                await _repository.SaveAsync();
             }
 
             foreach (var idAddedProduct in editFridgeDto.AddedProducts)
             {
-                var newProductForFridge = _repository.Product.GetProduct(idAddedProduct, false);
+                var newProductForFridge = await _repository.Product.GetProductAsync(idAddedProduct, false);
                 var fridgeProduct = new FridgeProduct
                 {
                     IdProduct = idAddedProduct,
@@ -221,7 +223,7 @@ namespace FridgeProject.Controllers
                     Quantity = newProductForFridge.DefaultQuantity
                 };
                 _repository.FridgeProduct.AddProductIntoFridge(fridgeProduct);
-                _repository.Save();
+                await _repository.SaveAsync();
             }
             
             return NoContent();
@@ -229,9 +231,9 @@ namespace FridgeProject.Controllers
         
         
         [HttpDelete("DeleteFridge/{idFridge}")]
-        public IActionResult DeleteFridge(int idFridge) 
+        public async Task<IActionResult> DeleteFridge(int idFridge) 
         {
-            var fridge = _repository.Fridge.GetFridge(idFridge, trackChanges: false);
+            var fridge = await _repository.Fridge.GetFridgeAsync(idFridge, trackChanges: false);
             
             if(fridge == null)
             {
@@ -239,20 +241,20 @@ namespace FridgeProject.Controllers
                 return NotFound(); 
             }
             
-            var fridgeProducts = _repository.FridgeProduct.GetFridgeProducts(false, idFridge: idFridge);
+            var fridgeProducts = await _repository.FridgeProduct.GetFridgeProductsAsync(false, idFridge: idFridge);
 
             foreach (var fridgeProduct in fridgeProducts)
             {
                 _repository.FridgeProduct.DeleteFridgeProduct(fridgeProduct);
             }
             _repository.Fridge.DeleteFridge(fridge);
-            _repository.Save();
+            await _repository.SaveAsync();
             return NoContent();
         }
         
         
         [HttpPost("CreateFridge")]
-        public IActionResult CreateFridge([FromBody] FridgeForCreationDto fridge)
+        public async Task<IActionResult> CreateFridge([FromBody] FridgeForCreationDto fridge)
         {
             if (fridge == null)
             {
@@ -274,13 +276,13 @@ namespace FridgeProject.Controllers
             };
 
             _repository.Fridge.CreateFridge(newFridge);
-            _repository.Save();
+            await _repository.SaveAsync();
             
-            var idNewFridge = _repository.Fridge.GetAllFridges(false).OrderBy(x => x.Id).Last().Id;
+            var idNewFridge = (await _repository.Fridge.GetAllFridgesAsync(false)).OrderBy(x => x.Id).Last().Id;
 
             foreach (var item in fridge.ProductsId)
             {
-                var product = _repository.Product.GetProduct(item, false);
+                var product = await _repository.Product.GetProductAsync(item, false);
 
                 var fridgeProduct = new FridgeProduct
                 {
@@ -295,7 +297,7 @@ namespace FridgeProject.Controllers
                 _repository.FridgeProduct.AddProductIntoFridge(fridgeProduct);
             }
             
-            _repository.Save();
+            await _repository.SaveAsync();
 
             return NoContent();
         }

@@ -1,14 +1,15 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Entities.Models;
 
 namespace Contracts
 {
     public interface IModelRepository
     {
-        IEnumerable<Model> GetAllFridgeModels(bool trackChanges);
+        public Task<IEnumerable<Model>> GetAllFridgeModelsAsync(bool trackChanges);
         
-        Model GetModel(int modelId, bool trackChanges);
+        public Task<Model> GetModelAsync(int modelId, bool trackChanges);
 
-        Model GetModelByName(string name, bool trackChanges);
+        public Task<Model> GetModelByNameAsync(string name, bool trackChanges);
     }
 }

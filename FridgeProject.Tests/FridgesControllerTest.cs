@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
@@ -23,17 +24,18 @@ namespace FridgeProject.Tests
         {
             // Arrange
             var repositoryManager = Substitute.For<IRepositoryManager>();
-            repositoryManager.Fridge.GetAllFridges(false).Returns(GetTestFridges());
-            repositoryManager.Model.GetModel(1, false).Returns(GetTestModels().First(x => x.Id == 1));
-            repositoryManager.Model.GetModel(2, false).Returns(GetTestModels().First(x => x.Id == 2));
+            repositoryManager.Fridge.GetAllFridgesAsync(false).Returns(GetTestFridges());
+            repositoryManager.Model.GetModelAsync(1, false).Returns(GetTestModels().First(x => x.Id == 1));
+            repositoryManager.Model.GetModelAsync(2, false).Returns(GetTestModels().First(x => x.Id == 2));
             var controller = new FridgesController(repositoryManager, Substitute.For<ILoggerManager>());
  
             // Act
             var result = controller.GetFridges();
  
             // Assert
-            var viewResult = Assert.IsType<OkObjectResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<FridgeWithModelDto>>(viewResult.Value);
+            var viewResult = Assert.IsType<Task<IActionResult>>(result);
+            var viewResult2 = Assert.IsType<OkObjectResult>(viewResult.Result);
+            var model = Assert.IsAssignableFrom<IEnumerable<FridgeWithModelDto>>(viewResult2.Value);
             Assert.Equal(GetTestFridges().Count, model.Count());
         }
         
@@ -42,17 +44,18 @@ namespace FridgeProject.Tests
         {
             // Arrange
             var repositoryManager = Substitute.For<IRepositoryManager>();
-            repositoryManager.Fridge.GetFridge(1 ,false).Returns(GetTestFridges().First(x => x.Id == 1));
+            repositoryManager.Fridge.GetFridgeAsync(1 ,false).Returns(GetTestFridges().First(x => x.Id == 1));
 
-            repositoryManager.Product.GetProducts(1, false).Returns(GetTestProducts());
+            repositoryManager.Product.GetProductsAsync(1, false).Returns(GetTestProducts());
             var controller = new FridgesController(repositoryManager, Substitute.For<ILoggerManager>());
  
             // Act
             var result = controller.GetProductsFromTheFridge(1);
  
             // Assert
-            var viewResult = Assert.IsType<OkObjectResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<ProductInFridgeDto>>(viewResult.Value);
+            var viewResult = Assert.IsType<Task<IActionResult>>(result);
+            var viewResult2 = Assert.IsType<OkObjectResult>(viewResult.Result);
+            var model = Assert.IsAssignableFrom<IEnumerable<ProductInFridgeDto>>(viewResult2.Value);
             Assert.Equal(GetTestProducts().Count, model.Count());
         }
         
@@ -68,9 +71,9 @@ namespace FridgeProject.Tests
                 Quantity = 1
             };
 
-            repositoryManager.Product.GetProductByName(productForAddToFridgeDto.Name, false)
+            repositoryManager.Product.GetProductByNameAsync(productForAddToFridgeDto.Name, false)
                 .Returns(_product);
-            repositoryManager.FridgeProduct.GetFridgeProduct(4, productForAddToFridgeDto.FridgeId, true)
+            repositoryManager.FridgeProduct.GetFridgeProductAsync(4, productForAddToFridgeDto.FridgeId, true)
                 .Returns(_fridgeProduct);
 
             var controller = new FridgesController(repositoryManager, Substitute.For<ILoggerManager>());
@@ -79,8 +82,9 @@ namespace FridgeProject.Tests
             var result = controller.AddProductInTheFridge(1, productForAddToFridgeDto);
  
             // Assert
-            var viewResult = Assert.IsType<OkObjectResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<ProductInFridgeDto>>(viewResult.Value);
+            var viewResult = Assert.IsType<Task<IActionResult>>(result);
+            var viewResult2 = Assert.IsType<OkObjectResult>(viewResult.Result);
+            var model = Assert.IsAssignableFrom<IEnumerable<ProductInFridgeDto>>(viewResult2.Value);
         }
         
         [Fact]
@@ -95,11 +99,11 @@ namespace FridgeProject.Tests
                 Quantity = 1
             };
 
-            repositoryManager.Product.GetProductByName(productForAddToFridgeDto.Name, false)
+            repositoryManager.Product.GetProductByNameAsync(productForAddToFridgeDto.Name, false)
                 .Returns(_product);
-            repositoryManager.FridgeProduct.GetFridgeProduct(4, productForAddToFridgeDto.FridgeId, true)
+            repositoryManager.FridgeProduct.GetFridgeProductAsync(4, productForAddToFridgeDto.FridgeId, true)
                 .Returns(_fridgeProduct);
-            repositoryManager.FridgeProduct.GetFridgeProduct(4, productForAddToFridgeDto.FridgeId, false)
+            repositoryManager.FridgeProduct.GetFridgeProductAsync(4, productForAddToFridgeDto.FridgeId, false)
                 .Returns(_fridgeProduct);
                 
 
@@ -109,8 +113,9 @@ namespace FridgeProject.Tests
             var result = controller.AddProductInTheFridge(1, productForAddToFridgeDto);
  
             // Assert
-            var viewResult = Assert.IsType<OkObjectResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<ProductInFridgeDto>>(viewResult.Value);
+            var viewResult = Assert.IsType<Task<IActionResult>>(result);
+            var viewResult2 = Assert.IsType<OkObjectResult>(viewResult.Result);
+            var model = Assert.IsAssignableFrom<IEnumerable<ProductInFridgeDto>>(viewResult2.Value);
         }
         
         
