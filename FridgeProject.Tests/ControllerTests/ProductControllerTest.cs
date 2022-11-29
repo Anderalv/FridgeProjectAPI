@@ -7,21 +7,38 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using FridgeProject.Controllers;
+using FridgeProject.Tests.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
-using NSubstitute;
+using Moq;
 using Xunit;
 
-namespace FridgeProject.Tests
+namespace FridgeProject.Tests.ControllerTests
 {
     public class ProductControllerTest
     {
+        private static IMapper _mapper;
+
+        public ProductControllerTest()
+        {
+            if (_mapper == null)
+            {
+                var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new SourceMappingProfile()); });
+                IMapper mapper = mappingConfig.CreateMapper();
+                _mapper = mapper;
+            }
+        }
+        
+        
         [Fact]
-        public void IndexReturnsAViewResultWithProduct()
+        public void GetProduct_ProductOnDataBase_GetProductByIdFromDataBase()
         {
             // Arrange
-            var repositoryManager = Substitute.For<IRepositoryManager>();
-            repositoryManager.Product.GetProductAsync(1, false).Returns(GetTestProducts().First(x=>x.Id == 1));
-            var controller = new ProductController(repositoryManager, Substitute.For<ILoggerManager>(), Substitute.For<IMapper>());
+            Mock<ILoggerManager> mockLogger = new Mock<ILoggerManager>();
+            Mock<IRepositoryManager> mockRepository = new Mock<IRepositoryManager>();
+            mockRepository.Setup(x => x.Product.GetProductAsync(1, false))
+                .ReturnsAsync(GetTestProducts().First(x=>x.Id == 1));
+            
+            var controller = new ProductController(mockRepository.Object, mockLogger.Object, _mapper);
  
             // Act
             var result = controller.GetProduct(1);
@@ -33,18 +50,22 @@ namespace FridgeProject.Tests
             Assert.Equal(1, model.Id);
         }
         
+        
         [Fact]
-        public void IndexReturnsAViewResultWithACreateProduct()
+        public void CreateProduct_DataBaseWithoutThisProduct_NewProductInDataBase()
         {
             // Arrange
-            var repositoryManager = Substitute.For<IRepositoryManager>();
-            var controller = new ProductController(repositoryManager, Substitute.For<ILoggerManager>(), Substitute.For<IMapper>());
+            Mock<ILoggerManager> mockLogger = new Mock<ILoggerManager>();
+            Mock<IRepositoryManager> mockRepository = new Mock<IRepositoryManager>();
+
+            var controller = new ProductController(mockRepository.Object, mockLogger.Object, _mapper);
             ProductForCreateDto productForCreateDto = new ProductForCreateDto
             {
                 Name = "ProductForCreation",
                 Quantity = 10
             };
-
+            
+            mockRepository.Setup(x => x.Product.CreateProduct(new Product()));
 
             // Act
             var result = controller.CreateProduct(productForCreateDto);
@@ -52,15 +73,22 @@ namespace FridgeProject.Tests
             // Assert
             var viewResult = Assert.IsType<Task<IActionResult>>(result);
             var viewResult2 = Assert.IsType<CreatedAtRouteResult>(viewResult.Result);
+            var model = Assert.IsAssignableFrom<ProductDto>(viewResult2.Value);
+            Assert.Equal(productForCreateDto.Name, model.Name);
+            Assert.Equal(productForCreateDto.Quantity, model.DefaultQuantity);
         }
         
+        
         [Fact]
-        public void IndexReturnsAViewResultWithAListOfProducts()
+        public void GetAllProducts_ProductsOnDataBase_GetAllProductsFromDataBase()
         {
             // Arrange
-            var repositoryManager = Substitute.For<IRepositoryManager>();
-            repositoryManager.Product.GetAllProductsAsync(false).Returns(GetTestProducts());
-            var controller = new ProductController(repositoryManager, Substitute.For<ILoggerManager>(), Substitute.For<IMapper>());
+            Mock<ILoggerManager> mockLogger = new Mock<ILoggerManager>();
+            Mock<IRepositoryManager> mockRepository = new Mock<IRepositoryManager>();
+            
+            mockRepository.Setup(x => x.Product.GetAllProductsAsync(false)).ReturnsAsync(GetTestProducts());
+            
+            var controller = new ProductController(mockRepository.Object, mockLogger.Object, _mapper);
 
             // Act
             var result = controller.GetAllProducts();
@@ -68,17 +96,21 @@ namespace FridgeProject.Tests
             // Assert
             var viewResult = Assert.IsType<Task<IActionResult>>(result);
             var viewResult2 = Assert.IsType<OkObjectResult>(viewResult.Result);
-            var model = Assert.IsAssignableFrom<IEnumerable<Product>>(viewResult2.Value);
+            var model = Assert.IsAssignableFrom<IEnumerable<ProductDto>>(viewResult2.Value);
             Assert.Equal(GetTestProducts().Count, model.Count());
         }
         
+        
         [Fact]
-        public void IndexReturnsAViewResultWithAUpdateProduct()
+        public void UpdateProduct_ProductWithOldNameAndQuantity_ThisProductWithNewNameAndQuantity()
         {
             // Arrange
-            var repositoryManager = Substitute.For<IRepositoryManager>();
-            repositoryManager.Product.GetProductAsync(1, true).Returns(GetTestProducts().First(x => x.Id == 1));
-            var controller = new ProductController(repositoryManager, Substitute.For<ILoggerManager>(), Substitute.For<IMapper>());
+            Mock<ILoggerManager> mockLogger = new Mock<ILoggerManager>();
+            Mock<IRepositoryManager> mockRepository = new Mock<IRepositoryManager>();
+            
+            mockRepository.Setup(x => x.Product.GetProductAsync(1, true)).ReturnsAsync(GetTestProducts().First(x => x.Id == 1));
+
+            var controller = new ProductController(mockRepository.Object, mockLogger.Object, _mapper);
             ProductForUpdateDto productForUpdateDto = new ProductForUpdateDto
             {
                 Name = "ProductForUpdateDto",
@@ -90,10 +122,8 @@ namespace FridgeProject.Tests
             
             // Assert
             var viewResult = Assert.IsType<Task<IActionResult>>(result);
-            var viewResult2 = Assert.IsType<OkObjectResult>(viewResult.Result);
-            var model = Assert.IsAssignableFrom<Product>(viewResult2.Value);
-            Assert.Equal("ProductForUpdateDto", model.Name);
-            Assert.Equal(10, model.DefaultQuantity);
+            var viewResult2 = Assert.IsType<NoContentResult>(viewResult.Result);
+            Assert.Equal(204, viewResult2.StatusCode);
         }
         
 

@@ -1,36 +1,53 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
+using Entities.DataTransferObjects;
 using Entities.Models;
 using FridgeProject.Controllers;
+using FridgeProject.Tests.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
-using NSubstitute;
+using Moq;
 using Xunit;
 
-namespace FridgeProject.Tests
+namespace FridgeProject.Tests.ControllerTests
 {
     public class ModelControllerTest
     {
+        private static IMapper _mapper;
+
+        public ModelControllerTest()
+        {
+            if (_mapper == null)
+            {
+                var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new SourceMappingProfile()); });
+                IMapper mapper = mappingConfig.CreateMapper();
+                _mapper = mapper;
+            }
+        }
+
+
         [Fact]
-        public void IndexReturnsAViewResultWithAListOfProducts()
+        public void GetAllModels_ModelsInDataBase_GetAllModelsFromDataBase()
         {
             // Arrange
-            var repositoryManager = Substitute.For<IRepositoryManager>();
-            repositoryManager.Model.GetAllFridgeModelsAsync(false).Returns(GetTestModels());
-            var controller = new ModelController(repositoryManager);
+            Mock<IRepositoryManager> mockRepository = new Mock<IRepositoryManager>();
+            mockRepository.Setup(x => x.Model.GetAllFridgeModelsAsync(false)).ReturnsAsync(GetTestModels());
+            
+            var controller = new ModelController(mockRepository.Object, _mapper);
 
             // Act
             var result = controller.GetAllModels();
-            
-            // Assert
+
+            //Assert
             var viewResult = Assert.IsType<Task<IActionResult>>(result);
             var viewResult2 = Assert.IsType<OkObjectResult>(viewResult.Result);
-            var model = Assert.IsAssignableFrom<IEnumerable<Model>>(viewResult2.Value);
+            var model = Assert.IsAssignableFrom<IEnumerable<ModelDto>>(viewResult2.Value);
             Assert.Equal(GetTestModels().Count, model.Count());
         }
-        
+
         private List<Model> GetTestModels()
         {
             var models = new List<Model>

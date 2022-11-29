@@ -1,5 +1,6 @@
 using System.IO;
 using Contracts;
+using FridgeProject.ActionFilters;
 using FridgeProject.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,15 +25,19 @@ namespace FridgeProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
+            services.AddAuthentication(); 
+            services.ConfigureIdentity();
+            services.AddScoped<ITokenService, TokenService>();
+            services.ConfigureJWT(Configuration);
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
             services.AddAutoMapper(typeof(Startup));
-            services.AddControllers();
-            services.AddSwaggerGen();
+            services.AddScoped<ValidationFilterAttribute>();
+            services.ConfigureSwagger();
             services.AddControllers(config => {
                 config.RespectBrowserAcceptHeader = true; 
                 config.ReturnHttpNotAcceptable = true;
@@ -55,10 +60,15 @@ namespace FridgeProject
             app.UseStaticFiles(); app.UseCors("CorsPolicy");
             app.UseForwardedHeaders(new ForwardedHeadersOptions {
                 ForwardedHeaders = ForwardedHeaders.All });
-            app.UseRouting(); app.UseAuthorization();
+            app.UseRouting(); 
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers(); });
             app.UseSwaggerDocumentation();
+            app.UseSwagger(); app.UseSwaggerUI(s => {
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Code Maze API v1");
+            });
         }
     }
 }

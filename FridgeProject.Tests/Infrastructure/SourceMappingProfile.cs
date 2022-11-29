@@ -2,11 +2,11 @@ using AutoMapper;
 using Entities.DataTransferObjects;
 using Entities.Models;
 
-namespace FridgeProject
+namespace FridgeProject.Tests.Infrastructure
 {
-    public class MappingProfile : Profile
+    public class SourceMappingProfile : Profile
     {
-        public MappingProfile()
+        public SourceMappingProfile()
         {
             CreateMap<Product, ProductDto>();
             CreateMap<Fridge, FridgeDto>();
