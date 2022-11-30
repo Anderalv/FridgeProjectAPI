@@ -23,7 +23,6 @@ namespace FridgeProject.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAllModels()
         {
             var models = await _repository.Model.GetAllFridgeModelsAsync(false);

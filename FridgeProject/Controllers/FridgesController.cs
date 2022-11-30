@@ -27,7 +27,7 @@ namespace FridgeProject.Controllers
         }
         
       
-        [HttpGet, Authorize(Roles = "Manager")]
+        [HttpGet]
         public async Task<IActionResult> GetFridges()
         {
             var fridgeWithModelDtos = new List<FridgeWithModelDto>();
@@ -57,7 +57,6 @@ namespace FridgeProject.Controllers
 
 
         [HttpGet("/ProductOnFridge/{fridgeId}", Name = "ProductsOnFridge")]
-        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetProductsFromTheFridge(int fridgeId) 
         {
             if(await _repository.Fridge.GetFridgeAsync(fridgeId, trackChanges: false) == null)
