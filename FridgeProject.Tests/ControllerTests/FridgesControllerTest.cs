@@ -1,17 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.DTOs.Fridge;
+using Application.DTOs.Product;
 using AutoMapper;
 using Contracts;
-using Entities.DataTransferObjects;
-using Entities.Models;
-using FridgeProject.Controllers;
+using Domain.Entities;
 using FridgeProject.Tests.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using WebApi.Controllers;
 using Xunit;
 
-namespace FridgeProject.Tests
+namespace FridgeProject.Tests.ControllerTests
 {
     public class FridgesControllerTest
     {

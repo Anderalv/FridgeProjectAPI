@@ -1,20 +1,18 @@
-using Application.DTOs.Account;
 using Application.DTOs.Fridge;
 using Application.DTOs.Model;
 using Application.DTOs.Product;
 using AutoMapper;
 using Domain.Entities;
 
-namespace FridgeProject.Tests.Infrastructure
+namespace Application.Mappings
 {
-    public class SourceMappingProfile : Profile
+    public class MappingProfile : Profile
     {
-        public SourceMappingProfile()
+        public MappingProfile()
         {
             CreateMap<Product, ProductDto>();
             CreateMap<Fridge, FridgeDto>();
             CreateMap<Model, ModelDto>();
-            CreateMap<UserForRegistrationDto, User>();
             CreateMap<FridgeProduct, ProductInFridgeDto>();
             CreateMap<ProductInFridgeDto, ProductInFridgeDtoToReturn>();
             CreateMap<FridgeProduct, FridgeProductDto>();
