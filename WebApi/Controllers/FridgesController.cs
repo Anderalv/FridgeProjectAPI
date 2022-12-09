@@ -30,7 +30,6 @@ namespace WebApi.Controllers
         
       
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetFridges()
         {
             var fridgeWithModelDtos = new List<FridgeWithModelDto>();

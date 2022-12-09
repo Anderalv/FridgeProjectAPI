@@ -261,8 +261,8 @@ namespace Infrastructure.Persistence.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "be6a239d-e0b7-4de2-a7ce-0c88592e1a83", "28664108-ce3a-492e-9ec7-f48ed6157e47", "Manager", "MANAGER" },
-                    { "b11dca52-325e-4eb4-b6d6-2550e0b18371", "084ad947-48e4-4db0-8284-af3b12b5238e", "Administrator", "ADMINISTRATOR" }
+                    { "a0bb4802-b57f-44c0-8d1d-f9e4a32aa0b1", "5b47f86b-a73b-4c8f-b624-825b7f90c52f", "Manager", "MANAGER" },
+                    { "5646ed22-ed56-4576-aa13-e365031b062b", "4c7df4ff-ca65-4a33-8e38-7dab5ecce73a", "Administrator", "ADMINISTRATOR" }
                 });
 
             migrationBuilder.InsertData(

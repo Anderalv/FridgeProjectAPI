@@ -429,15 +429,15 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "be6a239d-e0b7-4de2-a7ce-0c88592e1a83",
-                            ConcurrencyStamp = "28664108-ce3a-492e-9ec7-f48ed6157e47",
+                            Id = "a0bb4802-b57f-44c0-8d1d-f9e4a32aa0b1",
+                            ConcurrencyStamp = "5b47f86b-a73b-4c8f-b624-825b7f90c52f",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "b11dca52-325e-4eb4-b6d6-2550e0b18371",
-                            ConcurrencyStamp = "084ad947-48e4-4db0-8284-af3b12b5238e",
+                            Id = "5646ed22-ed56-4576-aa13-e365031b062b",
+                            ConcurrencyStamp = "4c7df4ff-ca65-4a33-8e38-7dab5ecce73a",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
